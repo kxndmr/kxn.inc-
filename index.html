@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>kxn.inc</title>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+background:black;
+color:white;
+text-align:center;
+overflow:hidden;
+}
+
+/* MATRIX CANVAS */
+canvas{
+position:fixed;
+top:0;
+z-index:0;
+}
+
+/* CONTENT */
+.container{
+position:relative;
+z-index:2;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+height:100vh;
+padding:20px;
+}
+
+h1{
+font-size:70px;
+color:#00ffff;
+text-shadow:0 0 25px #00ffff;
+margin-bottom:20px;
+}
+
+.quote{
+max-width:600px;
+font-size:18px;
+opacity:0.8;
+margin-bottom:40px;
+}
+
+.socials{
+display:flex;
+gap:40px;
+margin-bottom:30px;
+}
+
+.btn{
+padding:15px 35px;
+border:2px solid #00ffff;
+border-radius:50px;
+color:#00ffff;
+text-decoration:none;
+font-size:18px;
+transition:0.3s;
+display:inline-flex;
+align-items:center;
+gap:10px;
+}
+
+.btn:hover{
+background:#00ffff;
+color:black;
+box-shadow:0 0 20px #00ffff;
+}
+
+.whatsapp{
+margin-top:10px;
+}
+
+footer{
+position:absolute;
+bottom:20px;
+font-size:14px;
+opacity:0.6;
+}
+</style>
+</head>
+<body>
+
+<canvas id="matrixLeft"></canvas>
+<canvas id="matrixRight"></canvas>
+
+<div class="container">
+<h1>kxn.inc</h1>
+
+<div class="quote">
+Bu şehirde nerelisin diye yargılarlar,<br>
+“İzmir çocuğuyum” dersin, yargı biter, saygı başlar.
+</div>
+
+<div class="socials">
+<a href="https://instagram.com/kxn.inc" target="_blank" class="btn">
+<i class="fab fa-instagram"></i> Instagram
+</a>
+
+<a href="https://discord.com/users/808316519532068885" target="_blank" class="btn">
+<i class="fab fa-discord"></i> Discord
+</a>
+</div>
+
+<div class="whatsapp">
+<a href="https://wa.me/17422418983" target="_blank" class="btn">
+<i class="fab fa-whatsapp"></i> WhatsApp
+</a>
+</div>
+
+<footer>
+ihanetin affı yoktur<br><br>
+Tüm hakları kandemir'de saklıdır © 2026
+</footer>
+</div>
+
+<script>
+function startMatrix(canvasId, alignRight=false){
+const canvas = document.getElementById(canvasId);
+const ctx = canvas.getContext("2d");
+
+function resize(){
+canvas.height = window.innerHeight;
+canvas.width = window.innerWidth * 0.25; // %25 genişlik
+canvas.style.left = alignRight ? (window.innerWidth * 0.75) + "px" : "0px";
+}
+resize();
+
+const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789@#$%^&*";
+const fontSize = 14;
+let columns = canvas.width / fontSize;
+let drops = [];
+
+for(let x = 0; x < columns; x++) drops[x] = 1;
+
+function draw(){
+ctx.fillStyle = "rgba(0,0,0,0.08)";
+ctx.fillRect(0,0,canvas.width,canvas.height);
+
+ctx.fillStyle = "#00ffff";
+ctx.font = fontSize + "px monospace";
+
+for(let i=0;i<drops.length;i++){
+let text = letters.charAt(Math.floor(Math.random()*letters.length));
+ctx.fillText(text,i*fontSize,drops[i]*fontSize);
+
+if(drops[i]*fontSize > canvas.height && Math.random()>0.975)
+drops[i]=0;
+
+drops[i]++;
+}
+}
+
+setInterval(draw,35);
+
+window.addEventListener("resize", resize);
+}
+
+startMatrix("matrixLeft", false);
+startMatrix("matrixRight", true);
+</script>
+
+</body>
+</html>
